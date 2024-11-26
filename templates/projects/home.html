@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="hero text-center">
+    <div class="container">
+        <h1>Make a Difference in Africa</h1>
+        <p class="lead mb-4">Support education, healthcare, and food security initiatives across Africa</p>
+        <a href="{% url 'donate' %}" class="btn btn-lg btn-donate">Donate Now</a>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-md-4 text-center">
+                <div class="category-icon education-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3>Education</h3>
+                <p>Support schools and educational programs</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="category-icon healthcare-icon">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <h3>Healthcare</h3>
+                <p>Improve access to medical care</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="category-icon food-icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <h3>Food Security</h3>
+                <p>Fight hunger and malnutrition</p>
+            </div>
+        </div>
+
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="mb-4">Our Impact</h2>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="impact-number">${{ total_donations|floatformat:0 }}</div>
+                        <p>Total Donations</p>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="impact-number">{{ total_projects }}</div>
+                        <p>Active Projects</p>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="impact-number">{{ total_impacts }}</div>
+                        <p>Lives Impacted</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-center mb-4">Featured Projects</h2>
+            </div>
+            {% for project in projects %}
+            <div class="col-md-4 mb-4">
+                <div class="card project-card">
+                    <img src="{{ project.image.url }}" class="card-img-top" alt="{{ project.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ project.title }}</h5>
+                        <p class="card-text">{{ project.description|truncatewords:20 }}</p>
+                        <div class="progress mb-3">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ project.get_progress_percentage }}%">
+                                {{ project.get_progress_percentage }}%
+                            </div>
+                        </div>
+                        <p class="mb-2">
+                            <strong>${{ project.current_amount }}</strong> raised of ${{ project.goal_amount }} goal
+                        </p>
+                        <a href="{% url 'project_detail' project.slug %}" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mx-auto text-center">
+                <h3>Subscribe to Our Newsletter</h3>
+                <p>Stay updated with our projects and impact</p>
+                <form id="newsletter-form" class="mt-4">
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Enter your email" required>
+                        <button class="btn btn-primary" type="submit">Subscribe</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('newsletter-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    // Add newsletter subscription logic here
+    alert('Thank you for subscribing!');
+    this.reset();
+});
+</script>
+{% endblock %}
